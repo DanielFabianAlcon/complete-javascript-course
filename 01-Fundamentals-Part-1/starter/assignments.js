@@ -1,8 +1,8 @@
 
 // Exercise 1   Lesson 10
-const country = 'España';
-const continent = 'Europa';
-let population = 45;
+const country = 'Spain';
+const continent = 'Europe';
+let population = 130;
 // Exercise 2   Lesson 10
 console.log(country, continent, population);
 
@@ -90,7 +90,6 @@ if (numNeighbours === 1) {
 // Exercise 8   Lesson 22
 //think about it
 
-
 // Exercise 1   Lesson 26
 const languageSpeak = 'arabic';
 switch (languageSpeak) {
@@ -116,3 +115,8 @@ switch (languageSpeak) {
         console.log('Great language too :D');
         break;
 }
+
+// Exercise 1   Lesson 28
+console.log(`${country}'s population is ${population > 33 ? 'above' : 'below'} average`);
+// Exercise 2   Lesson 28
+// check result if population is 130
