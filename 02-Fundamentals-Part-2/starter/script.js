@@ -215,7 +215,54 @@ jonas['twitter'] = '@jonasscamed';
 console.log(jonas);
 
 // Challenge
-
 // Jonas has 3 friends and his best friend is called Michael.
+//console.log(`${jonas.firstName} has ${jonas.friends.length} friends and his best friend is called ${jonas.friends[0]}`);
 
-console.log(`${jonas.firstName} has ${jonas.friends.length} friends and his best friend is called ${jonas.friends[0]}`);
+// Challenge 3
+const dolphinsPoints = [
+    96, 108, 89
+];
+
+const koalasPoints = [
+    88, 91, 110
+];
+
+function calcAverage(name) {
+    let points = 0;
+    for (let i = 0; i < name.length; i++) {
+        points = points + name[i];
+    };
+
+    let average = points / name.length;
+    return average;
+}
+
+let dolphinsAverage = calcAverage(dolphinsPoints);
+let koalasAverage = calcAverage(koalasPoints);
+
+if (dolphinsAverage > koalasAverage) {
+    console.log(`The dolphins team won with his average of ${dolphinsAverage} points vs the ${koalasAverage} koalas points.`);
+} else if (dolphinsAverage < koalasAverage) {
+    console.log(`The koalas team won with his average of ${koalasAverage} points vs the ${dolphinsAverage} dolphins points.`);
+} else {
+    console.log(`No one won, just they got the same points.`)
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
