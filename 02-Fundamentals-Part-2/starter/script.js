@@ -184,7 +184,6 @@ const jonas = {
     job: 'teacher',
     friends: ['Michael', 'Peter', 'Steven']
 };
-*/
 const jonas = {
     firstName: 'Jonas',
     lastName: 'Scamed',
@@ -214,55 +213,50 @@ jonas.location = 'Portugal';
 jonas['twitter'] = '@jonasscamed';
 console.log(jonas);
 
-// Challenge
-// Jonas has 3 friends and his best friend is called Michael.
-//console.log(`${jonas.firstName} has ${jonas.friends.length} friends and his best friend is called ${jonas.friends[0]}`);
 
-// Challenge 3
-const dolphinsPoints = [
-    96, 108, 89
-];
+/// Challenge
 
-const koalasPoints = [
-    88, 91, 110
-];
+Jonas has 3 friends, his best friend is Michael 
 
-function calcAverage(name) {
-    let points = 0;
-    for (let i = 0; i < name.length; i++) {
-        points = points + name[i];
-    };
 
-    let average = points / name.length;
-    return average;
-}
-
-let dolphinsAverage = calcAverage(dolphinsPoints);
-let koalasAverage = calcAverage(koalasPoints);
-
-if (dolphinsAverage > koalasAverage) {
-    console.log(`The dolphins team won with his average of ${dolphinsAverage} points vs the ${koalasAverage} koalas points.`);
-} else if (dolphinsAverage < koalasAverage) {
-    console.log(`The koalas team won with his average of ${koalasAverage} points vs the ${dolphinsAverage} dolphins points.`);
-} else {
-    console.log(`No one won, just they got the same points.`)
+const jonas = {
+    firstName: 'Jonas',
+    lastName: 'Scamed',
+    age: 2037 - 1991,
+    job: 'teacher',
+    friends: ['Michael', 'Peter', 'Steven']
 };
 
+console.log(`${jonas.firstName} has ${jonas.friends.length} friends and his best friend is ${jonas.friends[0]} `)
+
+const jonas = {
+    firstName: 'Jonas',
+    lastName: 'Scamed',
+    birthYear: 1991,
+    job: 'teacher',
+    friends: ['Michael', 'Peter', 'Steven'],
+    hasDriversLicense: true,
+
+     calcAge: function(birthYear){
+        return new Date().getFullYear()-birthYear
+    } 
+
+     calcAge: function(){
+        return new Date().getFullYear()-this.birthYear
+    } 
+
+    calcAge: function(){
+        return this.age = 2037-this.birthYear
+    }
+
+};
+
+// Challenge
+// 'Jonas is 46-yearsold teacher and has a/no drivers license.'
+jonas.calcAge()
+console.log(`${jonas.firstName} is ${46-jonas.age} years old teacher and ${jonas.hasDriversLicense ? "has" : "do not have"} drivers license`)
+*/
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// alt shift a
