@@ -111,3 +111,31 @@ const arr2 = [4, 5, 6];
 
 console.log(arr.push(arr2));
 */
+
+/*
+    // Coding challenge 1
+
+    Given an array of forecasted maximum temperatures, the termometer displays a string with these temperatures:
+    Example : [17, 21, 23] will print "... 17ºC in 1 days ... 21ºC in 2 days ... 23ºC in 3 days ..."
+
+    Create a function printForecast which takes in array 'arr' and logs a string like the above to the console
+    Use the problem-solving framework: Understand the problem and break it up into sub-problems!
+
+    TEST DATA 1: [17, 21, 23]
+    TEST DATA 2: [12, 5, -5, 0 , 4]
+*/
+
+/* const printForecast = function (a) {
+  let string = '... ';
+
+  for (let i = 1; i <= a.length; i++) {
+    string = string + `${a[i - 1]}ºC in ${i} days ... `;
+  }
+
+  return string;
+};
+
+const data = [17, 21, 23];
+const data2 = [12, 5, -5, 0, 4];
+
+console.log(printForecast(data2)); */

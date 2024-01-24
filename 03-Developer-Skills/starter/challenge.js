@@ -12,13 +12,13 @@
     TEST DATA 1: [17, 21, 23]
     TEST DATA 2: [12, 5, -5, 0 , 4]
 */
-/*
+
 const printForecast = function (a) {
   let string = '... ';
 
-   for (let i = 1; i <= a.length; i++) {
+  for (let i = 1; i <= a.length; i++) {
     string = string + `${a[i - 1]}ºC in ${i} days ... `;
-  } 
+  }
 
   return string;
 };
@@ -26,7 +26,8 @@ const printForecast = function (a) {
 const data = [17, 21, 23];
 const data2 = [12, 5, -5, 0, 4];
 
-console.log(data, data2);*/
-console.log('SS');
+const example1 = printForecast(data);
+const example2 = printForecast(data2);
+console.log(example1, example2);
 
 // CODEWARS
