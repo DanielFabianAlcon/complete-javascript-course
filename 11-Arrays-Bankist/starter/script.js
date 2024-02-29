@@ -71,6 +71,82 @@ const currencies = new Map([
   ['GBP', 'Pound sterling'],
 ]);
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-
 /////////////////////////////////////////////////
+
+const displayMoney = function (movements) {
+  document.querySelector('.movements').innerHTML = '';
+
+  movements.forEach(function (mov, i) {
+    const type = mov > 0 ? 'deposit' : 'withdrawal';
+    const html = `
+      <div class="movements__row">
+        <div class="movements__type movements__type--${type}">${
+      i + 1
+    } ${type}</div>
+        <div class="movements__value">${mov}</div>
+      </div>
+    `;
+
+    containerMovements.insertAdjacentHTML('beforeend', html);
+  });
+};
+
+const createUser = function (accs) {
+  accs.forEach(function (acc) {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(value => value.at(0))
+      .join('');
+    //console.log(account1);
+  });
+};
+createUser(accounts);
+
+const calcMoney = function (movements) {
+  const money = movements.reduce((acc, cur) => acc + cur, 0);
+  labelBalance.textContent = `${money}€`;
+};
+
+const calcTax = function (movements) {
+  const positive = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, cur) => acc + cur, 0);
+
+  const negative = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, cur) => acc + cur, 0);
+
+  const taxes = movements
+    .filter(mov => mov > 0)
+    .map(move => (move * currentAccount.interestRate) / 100)
+    .reduce((acc, cur) => acc + cur);
+
+  labelSumIn.textContent = positive;
+  labelSumOut.textContent = negative;
+  labelSumInterest.textContent = taxes;
+};
+
+//Login
+let currentAccount;
+
+btnLogin.addEventListener('click', function (e) {
+  e.preventDefault();
+  currentAccount = accounts.find(
+    acc => acc.username === inputLoginUsername.value
+  );
+
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    labelWelcome.textContent = `Welcome back, ${
+      currentAccount.owner.split(' ')[0]
+    }`;
+
+    containerApp.style.opacity = 100;
+    // movements
+    displayMoney(currentAccount.movements);
+    // Total Money
+    calcMoney(currentAccount.movements);
+    // Calc the tax and rest money
+    calcTax(currentAccount.movements);
+  }
+});

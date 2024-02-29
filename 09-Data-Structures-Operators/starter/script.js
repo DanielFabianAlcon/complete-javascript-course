@@ -25,5 +25,34 @@ const restaurant = {
       open: 0, // Open 24 hours
       close: 24,
     },
+
+    order: function (starterIndex, mainIndex) {
+      return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]];
+    },
   },
 };
+
+/*
+/////////////////////////////////
+
+const arr = [2, 3, 4];
+const a = arr[0];
+const b = arr[1];
+const c = arr[2];
+
+let [x, y, z] = arr;
+console.log(x, y, z); 
+
+/////// Switch values 1
+const temp = x;
+x = y;
+y = temp;
+console.log(x, y, z); 
+
+/////// Switch values 2
+let [one, , three] = arr;
+console.log(one, three);
+
+const [starter, mainCourse] = restaurant.order(2, 0);
+console.log(starter, mainCourse);
+*/
