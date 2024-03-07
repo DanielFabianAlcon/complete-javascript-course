@@ -231,9 +231,11 @@ arr.reduce(function (acc, cur, i, arr) {
     return acc + cur
 }, n)       ----------- Ponemos en N el número por el que queremos empezar a sumar
 
---------------Find --------------------------
+--------------Find/FindIndex --------------------------
 
 Sirve para buscar elementos, devuelve el primer item de la busqueda (usado normalmente para buscar elementos unicos(DNI...))
 arr.find(item => item === 'Daniel Fabian Alcon')
+
+FindIndex sirve para lo mismo pero devuelve el index de la primera concordancia
 
 */

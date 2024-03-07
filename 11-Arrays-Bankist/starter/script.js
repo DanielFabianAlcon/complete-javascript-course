@@ -10,6 +10,7 @@ const account1 = {
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
   interestRate: 1.2, // %
   pin: 1111,
+  // username: js
 };
 
 const account2 = {
@@ -34,6 +35,18 @@ const account4 = {
 };
 
 const accounts = [account1, account2, account3, account4];
+
+const createUser = function (accs) {
+  accs.forEach(function (acc) {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(value => value.at(0))
+      .join('');
+    //console.log(account1);
+  });
+};
+createUser(accounts);
 
 // Elements
 const labelWelcome = document.querySelector('.welcome');
@@ -72,11 +85,45 @@ const currencies = new Map([
 ]);
 
 /////////////////////////////////////////////////
+// Update UI
 
-const displayMoney = function (movements) {
+const updateUI = function (acc) {
+  calcMoney(acc);
+  displayMoney(acc.movements);
+  calcTax(acc);
+};
+
+const calcMoney = function (acc) {
+  const money = acc.movements.reduce((acc, cur) => acc + cur, 0);
+  labelBalance.textContent = `${money}€`;
+  acc.money = money;
+};
+
+const calcTax = function (acc) {
+  const positive = acc.movements
+    .filter(mov => mov > 0)
+    .reduce((acc, cur) => acc + cur, 0);
+
+  const negative = acc.movements
+    .filter(mov => mov < 0)
+    .reduce((acc, cur) => acc + cur, 0);
+
+  const taxes = acc.movements
+    .filter(mov => mov > 0)
+    .map(move => (move * currentAccount.interestRate) / 100)
+    .reduce((acc, cur) => acc + cur);
+
+  labelSumIn.textContent = positive;
+  labelSumOut.textContent = negative;
+  labelSumInterest.textContent = taxes;
+};
+
+const displayMoney = function (movements, sort = false) {
   document.querySelector('.movements').innerHTML = '';
 
-  movements.forEach(function (mov, i) {
+  const movs = sort ? movements.slice().sort((a, b) => b - a) : movements;
+
+  movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `
       <div class="movements__row">
@@ -91,62 +138,127 @@ const displayMoney = function (movements) {
   });
 };
 
-const createUser = function (accs) {
-  accs.forEach(function (acc) {
-    acc.username = acc.owner
-      .toLowerCase()
-      .split(' ')
-      .map(value => value.at(0))
-      .join('');
-    //console.log(account1);
-  });
-};
-createUser(accounts);
-
-const calcMoney = function (movements) {
-  const money = movements.reduce((acc, cur) => acc + cur, 0);
-  labelBalance.textContent = `${money}€`;
-};
-
-const calcTax = function (movements) {
-  const positive = movements
-    .filter(mov => mov > 0)
-    .reduce((acc, cur) => acc + cur, 0);
-
-  const negative = movements
-    .filter(mov => mov < 0)
-    .reduce((acc, cur) => acc + cur, 0);
-
-  const taxes = movements
-    .filter(mov => mov > 0)
-    .map(move => (move * currentAccount.interestRate) / 100)
-    .reduce((acc, cur) => acc + cur);
-
-  labelSumIn.textContent = positive;
-  labelSumOut.textContent = negative;
-  labelSumInterest.textContent = taxes;
-};
-
 //Login
 let currentAccount;
 
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault();
+
   currentAccount = accounts.find(
     acc => acc.username === inputLoginUsername.value
   );
 
   if (currentAccount?.pin === Number(inputLoginPin.value)) {
-    labelWelcome.textContent = `Welcome back, ${
-      currentAccount.owner.split(' ')[0]
-    }`;
-
-    containerApp.style.opacity = 100;
-    // movements
-    displayMoney(currentAccount.movements);
-    // Total Money
-    calcMoney(currentAccount.movements);
-    // Calc the tax and rest money
-    calcTax(currentAccount.movements);
+    labelWelcome.textContent = `Welcome, ${currentAccount.owner.split(' ')[0]}`;
+    updateUI(currentAccount);
+    document.querySelector('.app').style.opacity = 100;
+    inputLoginPin.value = inputLoginUsername.value = '';
   }
 });
+
+// loan
+
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const amount = Number(inputLoanAmount.value);
+
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount / 10)) {
+    currentAccount.movements.push(amount);
+    updateUI();
+    inputLoanAmount.value = '';
+  }
+  /*
+  let maxMoney = currentAccount.movements.reduce(function (acc, cur) {
+    if (cur > acc) {
+      acc = cur;
+    }
+    return acc;
+  }, 0);
+
+  if (inputLoanAmount.value > maxMoney * 0.1) {
+    console.log('No puedes');
+    inputLoanAmount.value = '';
+  } else {
+    console.log('Si');
+    inputLoanAmount.value = '';
+  }*/
+});
+
+// transfer money
+
+btnTransfer.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const amount = Number(inputTransferAmount.value);
+  const receiverAcc = accounts.find(
+    acc => acc.username === inputTransferTo.value
+  );
+
+  if (
+    amount > 0 &&
+    receiverAcc &&
+    amount < currentAccount.money &&
+    receiverAcc?.username !== currentAccount.username
+  ) {
+    currentAccount.movements.push(-amount);
+    receiverAcc.movements.push(amount);
+    updateUI(currentAccount);
+    inputTransferAmount.value = inputTransferTo.value = '';
+  }
+
+  btnClose.addEventListener('click', function (e) {
+    e.preventDefault();
+
+    if (
+      currentAccount.username === inputCloseUsername.value &&
+      currentAccount.pin === Number(inputClosePin.value)
+    ) {
+      const index = accounts.findIndex(
+        acc => acc.username === currentAccount.username
+      );
+      accounts.splice(index, 1);
+    }
+    inputCloseUsername.value = inputClosePin.value = '';
+  });
+});
+
+// sort
+let sorted = false;
+
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  displayMoney(currentAccount.movements, !sorted);
+  sorted = !sorted;
+});
+
+// Practice
+
+// 1. All positive deposits sum
+const allDepositsSum = accounts
+  .flatMap(acc => acc.movements)
+  .filter(cur => cur > 0)
+  .reduce((acc, cur) => acc + cur, 0);
+//console.log(allDepositsSum);
+
+// 2. Num of  +1000€ deposits
+
+const numDeposits1000 = accounts
+  .flatMap(acc => acc.movements)
+  .filter(mov => mov >= 1000).length;
+//console.log(numDeposits1000);
+
+// 3. Calculate deposits and widthdrawals but now into an object with .reduce
+
+const sums = accounts
+  .flatMap(acc => acc.movements)
+  .reduce(
+    (acc, cur) => {
+      cur > 0 ? (acc.deposits += cur) : (acc.widthdrawals += cur);
+      return acc;
+    },
+    { deposits: 0, widthdrawals: 0 }
+  );
+
+console.log(sums);
