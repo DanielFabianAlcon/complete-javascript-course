@@ -239,3 +239,10 @@ arr.find(item => item === 'Daniel Fabian Alcon')
 FindIndex sirve para lo mismo pero devuelve el index de la primera concordancia
 
 */
+
+/*
+
+Number.isFinite(n)  --  Para saber si es un numero
+Number.isInteger(n)  --  Para saber si es entero
+
+*/

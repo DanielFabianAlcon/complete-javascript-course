@@ -154,6 +154,19 @@ btnLogin.addEventListener('click', function (e) {
     document.querySelector('.app').style.opacity = 100;
     inputLoginPin.value = inputLoginUsername.value = '';
   }
+
+  // Toastify
+
+  Toastify({
+    text: `Welcome, ${currentAccount.owner}!!`,
+
+    duration: 3000,
+    gravity: 'bottom',
+    position: 'right',
+    onClick: function () {
+      console.log(0);
+    },
+  }).showToast();
 });
 
 // loan
@@ -251,14 +264,34 @@ const numDeposits1000 = accounts
 
 // 3. Calculate deposits and widthdrawals but now into an object with .reduce
 
-const sums = accounts
+const { deposits, widthdrawals } = accounts
   .flatMap(acc => acc.movements)
   .reduce(
     (acc, cur) => {
-      cur > 0 ? (acc.deposits += cur) : (acc.widthdrawals += cur);
+      /*cur > 0 ? (acc.deposits += cur) : (acc.widthdrawals += cur);
+      return acc;*/
+      acc[cur > 0 ? 'deposits' : 'widthdrawals'] += cur;
       return acc;
     },
     { deposits: 0, widthdrawals: 0 }
   );
 
-console.log(sums);
+//console.log(deposits, widthdrawals);
+
+// 4. Convert a string into a title but with exceptions : this is a string -> This Is a String
+
+const convertTitleCase = function (title) {
+  const expections = ['a', 'an', 'the', 'but', 'or', 'on', 'in', 'with'];
+  const titleCase = title
+    .toLowerCase()
+    .split(' ')
+    .map(word =>
+      expections.includes(word) ? word : word[0].toUpperCase() + word.slice(1)
+    )
+    .join(' ');
+  return titleCase;
+};
+
+console.log(convertTitleCase('this is a nice tittle'));
+console.log(convertTitleCase('this is a LONG title but not too long'));
+console.log(convertTitleCase('and here is another title with an EXAMPLE'));
